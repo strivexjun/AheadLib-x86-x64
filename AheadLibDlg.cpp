@@ -82,6 +82,81 @@ BEGIN_MESSAGE_MAP(CAheadLibDlg, CDialog)
 END_MESSAGE_MAP()
 
 
+
+/*
+ *	禁止目录重定向
+ */
+BOOL safeWow64DisableDirectory(PVOID &arg)
+{
+	typedef BOOL WINAPI fntype_Wow64DisableWow64FsRedirection(PVOID *OldValue);
+	auto pfnWow64DisableWow64FsRedirection = (fntype_Wow64DisableWow64FsRedirection*)\
+		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64DisableWow64FsRedirection");
+
+	if (pfnWow64DisableWow64FsRedirection) {
+
+		(*pfnWow64DisableWow64FsRedirection)(&arg);
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+
+/*
+ *	恢复目录重定向
+ */
+BOOL safeWow64ReverDirectory(PVOID &arg)
+{
+	typedef BOOL WINAPI fntype_Wow64RevertWow64FsRedirection(PVOID *OldValue);
+	auto pfnWow64RevertWow64FsRedirection = (fntype_Wow64RevertWow64FsRedirection*) \
+		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64RevertWow64FsRedirection");
+
+	if (pfnWow64RevertWow64FsRedirection) {
+
+		(*pfnWow64RevertWow64FsRedirection)(&arg);
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+
+/*
+ *	安全取得系统真实信息
+ */
+VOID SafeGetNativeSystemInfo(__out LPSYSTEM_INFO lpSystemInfo)
+{
+	if (NULL == lpSystemInfo)    return;
+	typedef VOID(WINAPI *LPFN_GetNativeSystemInfo)(LPSYSTEM_INFO lpSystemInfo);
+	LPFN_GetNativeSystemInfo fnGetNativeSystemInfo = \
+		(LPFN_GetNativeSystemInfo)GetProcAddress(GetModuleHandleA("kernel32"), "GetNativeSystemInfo");
+
+	if (NULL != fnGetNativeSystemInfo)
+	{
+		fnGetNativeSystemInfo(lpSystemInfo);
+	}
+	else
+	{
+		GetSystemInfo(lpSystemInfo);
+	}
+}
+
+/**
+ * 获取系统位数
+ */
+BOOL IsArch64()
+{
+	SYSTEM_INFO si;
+ 	SafeGetNativeSystemInfo(&si);
+	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 ||
+		si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 // CAheadLibDlg 消息处理程序
 
 BOOL CAheadLibDlg::OnInitDialog()
@@ -114,7 +189,15 @@ BOOL CAheadLibDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+
+	PVOID redir;
+
 	SetWindowText(AHEADLIB_VERSION);
+
+	if (IsArch64())
+	{
+		safeWow64DisableDirectory(redir);
+	}
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
