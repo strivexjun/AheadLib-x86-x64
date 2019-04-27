@@ -785,8 +785,10 @@ void CAheadLibDlg::OnScanFile()
 			{
 				memcpy(&exFunc->secInfo, &sec, sizeof(IMAGE_SECTION_HEADER));
 
-				if ((sec.Characteristics & IMAGE_SCN_MEM_EXECUTE) &&
-					!(sec.Characteristics & IMAGE_SCN_MEM_WRITE))
+// 				if ((sec.Characteristics & IMAGE_SCN_MEM_EXECUTE) &&
+// 					!(sec.Characteristics & IMAGE_SCN_MEM_WRITE))
+// 				{
+				if (sec.Characteristics & IMAGE_SCN_MEM_EXECUTE)
 				{
 					//
 					//可运行不可写 代码区段
