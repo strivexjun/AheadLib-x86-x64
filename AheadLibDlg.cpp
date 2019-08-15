@@ -9,7 +9,7 @@
 
 #include "AheadSource.h"
 
-#define AHEADLIB_VERSION _T("AheadLib x86/x64  Ver:1.0")
+#define AHEADLIB_VERSION _T("AheadLib x86/x64  Ver:1.1")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -752,6 +752,15 @@ void CAheadLibDlg::OnScanFile()
 		exFunc->isTranFunc = FALSE;
 		exFunc->isData = FALSE;
 		exFunc->isDataCount = 0;
+
+		//
+		//过滤无效的RVA
+		//
+
+		if (exFunc->FunctionRVA == 0)
+		{
+			continue;
+		}
 
 		WORD *ordName = (WORD*)(exports->AddressOfNameOrdinals + (ULONG_PTR)dosHead);
 		for (DWORD i = 0; i < exports->NumberOfNames; i++)
