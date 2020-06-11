@@ -6,15 +6,15 @@ WCHAR *g_asmFileHeader = LR"(
 ; created by AheadLib
 ; github:https://github.com/strivexjun/AheadLib-x86-x64
 ;
-; °Ñ .asm ÎÄ¼şÌí¼Óµ½¹¤³ÌÒ»´Î
-; ÓÒ¼üµ¥»÷ÎÄ¼ş-ÊôĞÔ-³£¹æ-
-; ÏîÀàĞÍ:×Ô¶¨ÒåÉú³É¹¤¾ß
-; ´ÓÉú³ÉÖĞÅÅ³ı:·ñ
+; æŠŠ .asm æ–‡ä»¶æ·»åŠ åˆ°å·¥ç¨‹ä¸€æ¬¡
+; å³é”®å•å‡»æ–‡ä»¶-å±æ€§-å¸¸è§„-
+; é¡¹ç±»å‹:è‡ªå®šä¹‰ç”Ÿæˆå·¥å…·
+; ä»ç”Ÿæˆä¸­æ’é™¤:å¦
 
-; È»ºó¸´ÖÆÏÂÃæÃüÁîÌîÈë
-; ÃüÁîĞĞ: ml64 /Fo $(IntDir)%(fileName).obj /c /Cp %(fileName).asm
-; Êä³ö: $(IntDir)%(fileName).obj;%(Outputs)
-; Á´½Ó¶ÔÏó: ÊÇ
+; ç„¶åå¤åˆ¶ä¸‹é¢å‘½ä»¤å¡«å…¥
+; å‘½ä»¤è¡Œ: ml64 /Fo $(IntDir)%(fileName).obj /c /Cp %(fileName).asm
+; è¾“å‡º: $(IntDir)%(fileName).obj;%(Outputs)
+; é“¾æ¥å¯¹è±¡: æ˜¯
 ;
 
 
@@ -64,7 +64,7 @@ FARPROC WINAPI GetAddress(PCSTR pszProcName)
 			pszProcName = szProcName;
 		}
 
-		wsprintf(tzTemp, TEXT("ÎŞ·¨ÕÒµ½º¯Êı %hs,³ÌĞòÎŞ·¨Õı³£ÔËĞĞ"), pszProcName);
+		wsprintf(tzTemp, TEXT("æ— æ³•æ‰¾åˆ°å‡½æ•° %hs,ç¨‹åºæ— æ³•æ­£å¸¸è¿è¡Œ"), pszProcName);
 		MessageBox(NULL, tzTemp, TEXT("AheadLib"), MB_ICONSTOP);
 		ExitProcess(-2);
 	}
@@ -80,7 +80,7 @@ BOOL WINAPI Load()
 	TCHAR tzTemp[MAX_PATH * 2];
 
 	//
-	// ÕâÀïÊÇ·ñ´ÓÏµÍ³Ä¿Â¼»òµ±Ç°Ä¿Â¼¼ÓÔØÔ­Ê¼DLL
+	// è¿™é‡Œæ˜¯å¦ä»ç³»ç»Ÿç›®å½•æˆ–å½“å‰ç›®å½•åŠ è½½åŸå§‹DLL
 	//
 	GetSystemDirectory(tzPath, MAX_PATH);
 	lstrcat(tzPath, TEXT("\\AHEADLIB_XXXXXX.dll"));
@@ -88,7 +88,7 @@ BOOL WINAPI Load()
 	g_OldModule = LoadLibrary(tzPath);
 	if (g_OldModule == NULL)
 	{
-		wsprintf(tzTemp, TEXT("ÎŞ·¨ÕÒµ½Ä£¿é %s,³ÌĞòÎŞ·¨Õı³£ÔËĞĞ"), tzPath);
+		wsprintf(tzTemp, TEXT("æ— æ³•æ‰¾åˆ°æ¨¡å— %s,ç¨‹åºæ— æ³•æ­£å¸¸è¿è¡Œ"), tzPath);
 		MessageBox(NULL, tzTemp, TEXT("AheadLib"), MB_ICONSTOP);
 	}
 
@@ -107,7 +107,7 @@ DWORD WINAPI ThreadProc(LPVOID lpThreadParameter)
 	BYTE data1[] = { 0x90, 0x90, 0x90, 0x90 };
 
 	//
-	// ÈÆ¹ıVMP3.x µÄÄÚ´æ±£»¤
+	// ç»•è¿‡VMP3.x çš„å†…å­˜ä¿æŠ¤
 	//
 	hProcess = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE, FALSE, GetCurrentProcessId());
 	if (hProcess)
@@ -137,10 +137,10 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 			GetModuleFileName(NULL, szCurName, MAX_PATH);
 			PathStripPath(szCurName);
 
-			//ÊÇ·ñÅĞ¶ÏËŞÖ÷½ø³ÌÃû
-			if (StrCmpI(szAppName, szAppName) == 0)
+			//æ˜¯å¦åˆ¤æ–­å®¿ä¸»è¿›ç¨‹å
+			if (StrCmpI(szCurName, szAppName) == 0)
 			{
-				//Æô¶¯²¹¶¡Ïß³Ì»òÕßÆäËû²Ù×÷
+				//å¯åŠ¨è¡¥ä¸çº¿ç¨‹æˆ–è€…å…¶ä»–æ“ä½œ
 				HANDLE hThread = CreateThread(NULL, NULL, ThreadProc, NULL, NULL, NULL);
 				if (hThread)
 				{
