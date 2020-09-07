@@ -550,7 +550,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 
 	if (fileOut.Open(outputPath, CFile::modeCreate | CFile::modeWrite))
 	{
-		ansiSource = CW2A(source.GetString());
+		ansiSource = CW2CW(source.GetString());
 		fileOut.Write(ansiSource.GetString(), ansiSource.GetLength());
 		fileOut.Close();
 
@@ -569,7 +569,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 
 		if (fileOutAsm.Open(outputPathAsm, CFile::modeCreate | CFile::modeWrite))
 		{
-			ansiSourceAsm = CW2A(source_asm.GetString());
+			ansiSourceAsm = CW2CW(source_asm.GetString());
 			fileOutAsm.Write(ansiSourceAsm.GetString(), ansiSourceAsm.GetLength());
 			fileOutAsm.Close();
 		}

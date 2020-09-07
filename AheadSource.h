@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 WCHAR *g_asmFileHeader = LR"(
@@ -82,7 +82,11 @@ BOOL WINAPI Load()
 	//
 	// 这里是否从系统目录或当前目录加载原始DLL
 	//
-	GetSystemDirectory(tzPath, MAX_PATH);
+	//GetModuleFileName(NULL,tzPath,MAX_PATH); // 获取本目录下的
+	//PathRemoveFileSpec(tzPath);
+
+	GetSystemDirectory(tzPath, MAX_PATH);//默认获取系统目录的
+
 	lstrcat(tzPath, TEXT("\\AHEADLIB_XXXXXX.dll"));
 
 	g_OldModule = LoadLibrary(tzPath);
@@ -131,7 +135,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 
 		if (Load() && Init())
 		{
-			TCHAR szAppName[MAX_PATH] = TEXT("MyApp.exe");
+			TCHAR szAppName[MAX_PATH] = TEXT("MyApp.exe");//请修改宿主进程名
 			TCHAR szCurName[MAX_PATH];
 
 			GetModuleFileName(NULL, szCurName, MAX_PATH);

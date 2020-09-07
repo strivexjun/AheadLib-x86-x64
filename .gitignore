@@ -1,2 +1,17 @@
 # Prerequisites
 
+/Release/stdafx.obj
+*.pdb
+*.tlog
+/.vs/AheadLib/v16/ipch
+/Release/AheadLib.exe.recipe
+/Release/AheadLib.iobj
+/Release/AheadLib.ipdb
+/Release/AheadLib.log
+/Release/AheadLib.obj
+/Release/AheadLib.pch
+/Release/AheadLib.res
+/Release/AheadLib.vcxproj.FileListAbsolute.txt
+/Release/AheadLibDlg.obj
+/Release/AheadLib.Build.CppClean.log
+/.vs/AheadLib/v16
