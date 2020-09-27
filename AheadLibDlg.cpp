@@ -9,7 +9,7 @@
 
 #include "AheadSource.h"
 
-#define AHEADLIB_VERSION _T("AheadLib x86/x64  Ver:1.1")
+#define AHEADLIB_VERSION _T("AheadLib x86/x64  Ver:1.2")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -340,7 +340,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 
 
 	if (m_isx64) {
-		source += _T("EXTERN_C_START\r\n");
+		source += _T("//EXTERN_C_START\nextern \"C\" \n{\r\n");
 	}
 
 	for (auto exFunc : m_exportFunc)
@@ -369,7 +369,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 	}
 
 	if (m_isx64) {
-		source += _T("EXTERN_C_END\r\n");
+		source += _T("}\n//EXTERN_C_END\r\n");
 	}
 
 	source += _T("\r\n");
@@ -469,7 +469,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 			source_asm += str;
 		}
 
-		source_asm += _T("\r\n");
+		source_asm += _T("\r\n.CODE\r\n");
 
 		for (auto exFunc : m_exportFunc)
 		{
