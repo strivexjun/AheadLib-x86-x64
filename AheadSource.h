@@ -82,10 +82,10 @@ BOOL WINAPI Load()
 	//
 	// 这里是否从系统目录或当前目录加载原始DLL
 	//
-	//GetModuleFileName(NULL,tzPath,MAX_PATH); // 获取本目录下的
+	//GetModuleFileName(NULL,tzPath,MAX_PATH); //获取本目录下的
 	//PathRemoveFileSpec(tzPath);
 
-	GetSystemDirectory(tzPath, MAX_PATH);//默认获取系统目录的
+	GetSystemDirectory(tzPath, MAX_PATH); //默认获取系统目录的
 
 	lstrcat(tzPath, TEXT("\\AHEADLIB_XXXXXX.dll"));
 

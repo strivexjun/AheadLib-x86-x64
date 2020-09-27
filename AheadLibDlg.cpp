@@ -15,7 +15,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialog
@@ -50,7 +49,6 @@ END_MESSAGE_MAP()
 
 
 // CAheadLibDlg 对话框
-
 
 
 CAheadLibDlg::CAheadLibDlg(CWnd* pParent /*=nullptr*/)
@@ -340,7 +338,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 
 
 	if (m_isx64) {
-		source += _T("//EXTERN_C_START\nextern \"C\" \n{\r\n");
+		source += _T("extern \"C\" \n{\r\n");
 	}
 
 	for (auto exFunc : m_exportFunc)
@@ -369,7 +367,7 @@ void CAheadLibDlg::OnBnClickedButtonMakefile()
 	}
 
 	if (m_isx64) {
-		source += _T("}\n//EXTERN_C_END\r\n");
+		source += _T("}\r\n");
 	}
 
 	source += _T("\r\n");
